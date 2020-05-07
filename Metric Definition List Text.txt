@@ -1,196 +1,234 @@
-Earnings Binder Metric Definitions												
-												
-#	Metric	Definition	Specifications	PFIT Field Mappings	Automated Capture Process	Working Day Input Timing	Data Sources (SOR)	Report Frequency	Metric Destination	Metric Business Approver	Mertic Data Steward	Comments
-1	Active Accounts	"The count of active accounts based on the prior 12 months of transaction activity.  An account is considered to be active if it is a registered account that meets either of the following conditions:
+1    Active Accounts - The count of active accounts based on the prior 12 months of transaction activity. An account is considered to be active if it is a registered account that meets either of the following conditions:
+	1. Account sent at least one payment in the past 12 months satisfying the following conditions:
+		a. The payment is either successful, partially or fully reversed
+		b. The payment is official
+		c. The payment is neither a Direct Credit Card (DCC), Virtual Terminal (VT) nor a Web Accept eXpress payment (WAX)
+	2. Account is classfiied as a consumer or merchant account and received at least one payment in the past 12 months satisfying the following conditions:
+		a. The payment is either successful, partially or fully reversed
+		b. The payment is official
+		c. The payment is neither a Direct Credit Card (DCC), Virtual Terminal (VT) nor a Web Accept eXpress payment (WAX)
+    CUSTOMER ACCOUNT CLASSIFICATION KEY: 
+	1 = Consumer
+	2 = Merchant
+	TRANSACTION TYPE: U (Payment Transaction)
+	TRANSACTION DATE: Last 12 months
+	REVERSAL STATUS: 
+	‚Äò00‚Äô ‚Äì ‚ÄúNot Reversed‚Äù
+	‚Äò01‚Äô ‚Äì ‚ÄúPartial Reversal‚Äù
+	‚Äò02‚Äô ‚Äì ‚ÄúFull Reversal‚Äù
+	TRANSACTION AMOUNT: Not equal to 0
+	PAYMENT OFFICIAL: '00' (Yes)
+	Metric Type: Count
+	Is NOT DCC / WAX / VT payments AND
+	Exclude Guest accounts from Account Table ‚Äì <Guest Account Flag>
+    Account Classification key - PARTY_ACCOUNT_STATUS_CODE-Account type
+	Transaction type¬† - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCTRANTYP
+	Transaction date - AV_BV_RDL_ZAFI______Z_SLPD-<POSTING DATE>
+	Reversal Status - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCSTATUS
+	Transaction Amount - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCUSDAMT
+	Payment official -¬† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCOFFPMT
+	DCC/WAX/VT Payment ‚Äì AV_BV_RDL_ZAFI-Sender Type Key = 3 or 03 (Member Transaction) 
+    Yes /No  - is the capture of data elements for this metric automated e.g. WD3, ECC, Monthly / Ad-hoc 
+	Acquistion and Credit Active Accounts are determined by the Payment Flow dimension.
+	
+2    Active Accounts Consumer- The count of active accounts (as defined above) that are classified as Consumer accounts.    
+                               
+3    Active Accounts Merchant - The count of active accounts (as defined above) that are classified as Merchant accounts.
+                              
+4    Active Accounts Mobile - The count of active accounts (as defined above) that are classified as Mobile accounts.
+    Payment Flow - Contains mobile in sub flow, flow family, or primary flow    Mobile ‚Äì From Payment Flow
+	Payment flow -¬† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY
+	Mobile is determined by Payment Flow
+	
+5    Active Accounts MP and MS - The count of active accounts (as defined above) that are classified as Marketplace or Merchant Services accounts.
+    Payment Flow node MP or MS - Payment Flow Node MP - From Payment Flow
+	Payment flow -¬† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY
+	Determined based on transactions under the MP node.
+	
+7    Application Downloads - The count of mobile application downloads in the given reporting period.
+	Manually loaded via upload template. Only loaded by Venmo.
+	
+8    APV Mobile Rec - Average Payment Volume of Mobile Payments, defined as:
+	APV Mobile Rec = nTPV Mobile Rec / No of Payments Mobile Rec
+	
+9    APV Rec - Average Payment Volume (APV) is a calculated metric based on the corresponding nTPV and Number of Payments (No of Payments), defined as:
+	APV Rec = nTPV Rec / No of Payments Rec
+                       
+10    APV P2P Rec - Average Payment Volume of P2P Payments, defined as:
+	APV Mobile Rec = nTPV P2P Rec / No of Payments P2P Rec
+	
+11    APV CBT Rec - Average Payment Volume of Cross Border (CBT) Payments, defined as:
+	APV CBT Rec = nTPV CBT Rec / No of Payments CBT Rec
+	
+12    Authorized Payment Volume - Total authorized payment volume on the Braintree platform for a given reporting period.Loaded Braintree Metric.
 
-1. Account sent at least one payment in the past 12 months satisfying the following conditions:
-    a. The payment is either successful, partially or fully reversed
-    b. The payment is official
-    c. The payment is neither a Direct Credit Card (DCC), Virtual Terminal (VT) nor a Web Accept eXpress payment (WAX)
+13    Average Loans Month - Average Loans Receivable in a given reporting month. Defined as the average of the of the month end and month beginning Loans Receivable.Loaded Credit Metric.
 
-2. Account is classfiied as a consumer or merchant account and received at least one payment in the past 12 months satisfying the following conditions:
-    a. The payment is either successful, partially or fully reversed
-    b. The payment is official
-    c. The payment is neither a Direct Credit Card (DCC), Virtual Terminal (VT) nor a Web Accept eXpress payment (WAX)"	"CUSTOMER ACCOUNT CLASSIFICATION KEY: 1 = ""Consumer"", 2 = ""Merchant""
-TRANSACTION TYPE: ""U"" (Payment Transaction)
-TRANSACTION DATE: Last 12 months
-REVERSAL STATUS: 
-ë00í ñ ìNot Reversedî
-ë01í ñ ìPartial Reversalî
-ë02í ñ ìFull Reversalî
-TRANSACTION AMOUNT: Not equal to 0
-PAYMENT OFFICIAL: '00' (Yes)
-Metric Type: Count
-Is NOT DCC / WAX / VT payments AND
-Exclude Guest accounts from Account Table ñ <Guest Account Flag>
-"	"Account Classification key - PARTY_ACCOUNT_STATUS_CODE-Account type
-Transaction type† - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCTRANTYP
-Transaction date - AV_BV_RDL_ZAFI______Z_SLPD-<POSTING DATE>
-Reversal Status - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCSTATUS
-Transaction Amount - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCUSDAMT
-Payment official -† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCOFFPMT
-DCC/WAX/VT Payment ñ AV_BV_RDL_ZAFI-Sender Type Key = 3 or 03 (Member Transaction) 
-"	Yes /No  - is the capture of data elements for this metric automated	e.g. WD3	e.g. ECC	e.g. Monthly / Ad-hoc	Report Name X	Name of Business Approver for changes	Name of Person responsible for making the changes	Acquistion and Credit Active Accounts are determined by the Payment Flow dimension.
-2	Active Accounts Consumer	The count of active accounts (as defined above) that are classified as Consumer accounts.	"Same as Active Accounts but with the following additional criteria:
-CUSTOMER ACCOUNT CLASSIFICATION KEY: 1 = ""Consumer"""	Customer Type ñ Account type from Account table								
-3	Active Accounts Merchant	The count of active accounts (as defined above) that are classified as Merchant accounts.	"Same as Active Accounts but with the following additional criteria:
-CUSTOMER ACCOUNT CLASSIFICATION KEY: 2 = ""Merchant"""	Customer Type ñ Account type from Account table								
-4	Active Accounts Mobile	The count of active accounts (as defined above) that are classified as Mobile accounts.	"Same as Active Accounts but with the following additional criteria:
-Payment Flow - Contains ""mobile"" in sub flow, flow family, or primary flow"	"Mobile ñ From Payment Flow
-Payment flow -† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY"								Mobile is determined by Payment Flow
-5	Active Accounts MP and MS	The count of active accounts (as defined above) that are classified as Marketplace or Merchant Services accounts.	"Same as Active Accounts but with the following additional criteria:
-By Payment Flow node MP or MS"	"Payment Flow Node MP - From Payment Flow
-Payment flow -† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY"								Determined based on transactions under the MP node.
-7	Application Downloads	The count of mobile application downloads in the given reporting period.	Manually loaded via upload template.	Manually loaded via upload template.								Only loaded by Venmo.
-8	APV Mobile Rec	"Average Payment Volume of Mobile Payments, defined as:
+14    Average Loans Quarter - Average Loans Receivable in a given reporting quarter.  Defined as the average of the of the quarter end and quarter beginning Loans Receivable. Loaded Credit Metric
 
-APV Mobile Rec = nTPV Mobile Rec / No of Payments Mobile Rec"	"Calculated metric, see base metric definitions"	"Calculated metric, see base metric definitions"								
-9	APV Rec	"Average Payment Volume (APV) is a calculated metric based on the corresponding nTPV and Number of Payments (No of Payments), defined as:
+15    Average Loans Year - Average Loans Receivable in a given reporting year.  Defined as the average of the of the year end and year beginning Loans Receivable. Loaded Credit Metric
 
-APV Rec = nTPV Rec / No of Payments Rec
+16    BML 90+ Day Delinquency - Value of 90+ Day Delinquencies at the end of the given reporting period. Loaded Credit Metric.
 
-APV is based on the relevant Received (""Rec"") metrics (e.g. nTPV Rec)."	"Calculated metric, see base metric definitions"	"Calculated metric, see base metric definitions"								
-10	APV P2P Rec	"Average Payment Volume of P2P Payments, defined as:
+17    BML on Ebay nTPV - nTPV (as defined below) for Bill Me Later payments made on eBay. Loaded Credit Metric.
 
-APV Mobile Rec = nTPV P2P Rec / No of Payments P2P Rec"	"Calculated metric, see base metric definitions"	"Calculated metric, see base metric definitions"								
-11	APV CBT Rec	"Average Payment Volume of Cross Border (CBT) Payments, defined as:
+18    BML on Paypal nTPV - nTPV (as defined below) for Bill Me Later payments made on PayPal. Loaded Credit Metric.
 
-APV CBT Rec = nTPV CBT Rec / No of Payments CBT Rec"	"Calculated metric, see base metric definitions"	"Calculated metric, see base metric definitions"								
-12	Authorized Payment Volume	Total authorized payment volume on the Braintree platform for a given reporting period.	Loaded Braintree Metric	Loaded Braintree Metric								Loaded Braintree Metric
-13	Average Loans Month	Average Loans Receivable in a given reporting month.  Defined as the average of the of the month end and month beginning Loans Receivable.	Loaded Credit Metric	Loaded Credit Metric								Loaded Credit Metric
-14	Average Loans Quarter	Average Loans Receivable in a given reporting quarter.  Defined as the average of the of the quarter end and quarter beginning Loans Receivable.	Loaded Credit Metric	Loaded Credit Metric								Loaded Credit Metric
-15	Average Loans Year	Average Loans Receivable in a given reporting year.  Defined as the average of the of the year end and year beginning Loans Receivable.	Loaded Credit Metric	Loaded Credit Metric								Loaded Credit Metric
-16	BML 90+ Day Delinquency	Value of 90+ Day Delinquencies at the end of the given reporting period.	Loaded Credit Metric	Loaded Credit Metric								Loaded Credit Metric
-17	BML on Ebay nTPV	nTPV (as defined below) for Bill Me Later payments made on eBay.	Loaded Credit Metric	Loaded Credit Metric								Loaded Credit Metric
-18	BML on Paypal nTPV	nTPV (as defined below) for Bill Me Later payments made on PayPal.	Loaded Credit Metric	Loaded Credit Metric								Loaded Credit Metric
-19	Cards on File	Count of cards on file on the Braintree platform.	Loaded Braintree Metric	Loaded Braintree Metric								Loaded Braintree Metric
-20	Cumulative Loans	Calculated metric defined as the sum of the Loans Originated for a given reporting period.	"Calculated metric, see base metric definitions. 
+19    Cards on File - Count of cards on file on the Braintree platform. Loaded Braintree Metric.
 
-Base Metric: Loans Originated"	"Calculated metric, see base metric definitions"								Calculated in Credit Report
-21	FXN Revenue YoY Growth (%)	"The FX Neutral Revenue YoY Growth Rate is calculated offline and manually loaded.  External FX neutral is defined as ìCurrent quarter local currency converted to USD using an average quarterly spot rate of the Prior Year, Same Quarter and comparing that to the actual reported numbers results (at spot rates) of the same Prior Year, Prior Quarter (for example: Q1í15 FXN   growth is calculated as Q1í15 local currency converted to USD using the average quarterly spot rate of Q1í14 and comparing that to the actual reported results (at spot rates)bof Q1í14)."	Manually loaded via adjustments template.	Manually loaded via adjustments template.								Manually loaded via adjustments template.
-22	Loans Originated	Total loans originated for a given reporting period.	Loaded Credit Metric	Loaded Credit Metric								Loaded Credit Metric
-23	MS and MP Revenue	"Merchant Services (MS) and Marketplaces (MP)Revenue defined as the sum of GL accounts: 401035, 401077, 401076, 401161 for core Merchant Service and Marketplaces payment flows."	"Based on GL Accounts 401035, 401077, 4010-76 and 401161 for MS and MP payment flows"	"Payment flow -† WV_RDL_ZAFI______Z_SLPDD-/BIC/ZCPAYKEY
-Region ñ  WV_RDL_ZAFI______Z_SLPDD-/BIC/ZCCTRYACC
-Reason Code - WV_RDL_ZAFI______Z_SLPDD-/BIC/ZCRSNCOD
-Sub ledger Acct - WV_RDL_ZAFI______Z_SLPDD-/BA1/C55SLACC
-See ""MS, MP Subledger Mapping"" tab for PFIT field specifics."								
-24	Net Charge Off Rate %	"The Net Charge Off Rate % refers to the net credit losses divided by the total average loans over a given time period.
+20    Cumulative Loans - Calculated metric defined as the sum of the Loans Originated for a given reporting period. Calculated metric, see base metric definitions, Base Metric: Loans Originated, Calculated in Credit Report.
 
-Calculation: (Net Credit Loss $ / Average Loans Receivable) * (360 / # of days in given reporting period)
+21    FXN Revenue YoY Growth (%) - The FX Neutral Revenue YoY Growth Rate is calculated offline and manually loaded.  External FX neutral is defined as ‚ÄúCurrent quarter local currency converted to USD using an average quarterly spot rate of the Prior Year, Same Quarter and comparing that to the actual reported numbers results (at spot rates) of the same Prior Year, Prior Quarter (for example: Q1‚Äô15 FXN   growth is calculated as Q1‚Äô15 local currency converted to USD using the average quarterly spot rate of Q1‚Äô14 and comparing that to the actual reported results (at spot rates)bof Q1‚Äô14). Manually loaded via adjustments template.
 
-Additional Calculations to calculate above calculation for a given period: 
-Net Credit Loss $ = ""744003"" + ""744007"" + ""744008"" + ""744009"" + ""744014"" + ""744022"""	"Calculated metric, see base metric definitions. 
+22    Loans Originated - Total loans originated for a given reporting period.Loaded Credit Metric.
 
-Base Metric: GL Accounts and Average Loans"	"Calculated metric, see base metric definitions. 
+23    MS and MP Revenue - Merchant Services (MS) and Marketplaces (MP)Revenue defined as the sum of GL accounts: 401035, 401077, 401076, 401161 for core Merchant Service and Marketplaces payment flows. Based on GL Accounts 401035, 401077, 4010-76 and 401161 for MS and MP payment flows.
+	Payment flow -¬† WV_RDL_ZAFI______Z_SLPDD-/BIC/ZCPAYKEY
+	Region ‚Äì  WV_RDL_ZAFI______Z_SLPDD-/BIC/ZCCTRYACC
+	Reason Code - WV_RDL_ZAFI______Z_SLPDD-/BIC/ZCRSNCOD
+	Sub ledger Acct - WV_RDL_ZAFI______Z_SLPDD-/BA1/C55SLACC
+	See MS, MP Subledger Mapping tab for PFIT field specifics.
+	
+24    Net Charge Off Rate % - The Net Charge Off Rate % refers to the net credit losses divided by the total average loans over a given time period.
+	Calculation: (Net Credit Loss $ / Average Loans Receivable) * (360 / # of days in given reporting period)
+	Additional Calculations to calculate above calculation for a given period: 
+	Net Credit Loss $ = 744003 + 744007 + 744008 + 744009 + 744014 + 744022 
+	Base Metric: GL Accounts and Average Loans.
+	
+25    New Mobile Activations - Count of new mobile activations in a given reporting period, includind PayPal core and Venmo. 
+	A mobile activation is defined as the first time a mobile payment is sent.  This determination is based on the date of the first sender event for an account and the Payment Flow sub flow indicator of mobile. Venmo is manually loaded.  PayPal core is loaded from EDW through Essbase.
+	
+26    No of Payments Rec - Number of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period.
+    TRANSACTION TYPE: ‚ÄúU‚Äù Payment Transaction
+	nTPV Impact Flag = Yes
+	PAYMENT OFFICIAL FLAG: Flag value needs to be set to ‚Äò00‚Äô (Official Payment)
+	REVERSAL STATUS: 
+‚Äò00‚Äô ‚Äì ‚ÄúNot Reversed‚Äù
+‚Äò01‚Äô ‚Äì ‚ÄúPartial Reversal‚Äù
+‚Äò02‚Äô ‚Äì ‚ÄúFull Reversal‚Äù
+	Transaction type¬† - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCTRANTYP
+	Official payment indicator - AV_BV_RDL_ZAFI______Z_SLPD- /BIC/ZCOFFPMT
+	Transaction Status - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCSTATUS
+                                
+27    No of Payments Mobile Rec - The number of mobile payments received (as defined above) for a given reporting period.
+    Same as No of Payments but with the following additional criteria:
+	Payment Flow - Contains mobile in sub flow, flow family, or primary flow
+	Payment flow -¬† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY
+    Mobile is determined by Payment Flow
+	
+28    No of Payments P2P Rec - The number of P2P payments received (as defined above) for a given reporting period.
+    Same as No of Payments but with the following additional criteria:
+	Payment Flow - Sub flow contains Send Money, Legacy WAP, P2P, or Money Request
+	Transaction Subtype G, H or S    Payment flow -¬† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY
+	P2P:
+	‚Äì Transaction Subtype G, H or S 
+	- Payment Flow = (Send Money, Legacy WAP, P2P, Money request)
+                                
+29    No of Payments XB Rec - The number of cross border (CBT) payments received (as defined above) for a given reporting period.  A cross border transaction is a transaction in which the sender and reciever accounts are located in different countries.
+    Same as No of Payments but with the following additional criteria:
+	Account Table - Sender and receiver accounts are in different countries
+    CBT is determined by:
+	‚Äì RDL table - <INTRA/CROSSBORDER TNX> (ZCINTCRSB) (and by Sender or receiver Flag)
+                                
+30    nTPV Rec - The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period.
+    TRANSACTION TYPE: ‚ÄúU‚Äù Payment Transaction
+	REVERSAL STATUS: 
+	‚Äò00‚Äô ‚Äì ‚ÄúNot Reversed‚Äù
+	‚Äò01‚Äô ‚Äì ‚ÄúPartial Reversal‚Äù
+	‚Äò02‚Äô ‚Äì ‚ÄúFull Reversal‚Äù
+	PAYMENT OFFICIAL FLAG: Flag value needs to be set to ‚Äò00‚Äô (Official Payment)
+	PAYMENT SENT / RECEIVED FLAG: Flag value has to be ‚Äò00‚Äô (Sent) (will be used to get 1 side of the transaction)
+	nTPV Impact Flag = Yes ‚Äì From RDL table
+    Transaction Amount ‚Äì Absolute of Transaction Amount
+	Transaction type¬† - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCTRANTYP
+	Reversal Status - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCSTATUS
+	Official payment indicator - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCOFFPMT
+	Sender or receiver flag - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCSENDREC
+		
+31    nTPV ACH - The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with ACH as the funding source.
+    Same as nTPV - Rec but with the following additional criteria:
+	Funding Source of ACH    Funding Source ‚Äì From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions. Funding Mix is determined by Transaction Type field.
+	
+32    nTPV Buyer Credit - The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with Buyer Credit as the funding source.
+    Same as nTPV - Rec but with the following additional criteria:
+	Funding Source of Buyer Credit    Funding Source ‚Äì From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions. Funding Mix is determined by Transaction Type field
+	
+33    nTPV Card - nTPV Card is defined as the sum of of nTPV Credit Card and nTPV Debit Card.
+ 
+34    nTPV Credit Card - The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with Credit Card as the funding source.
+    Same as nTPV - Rec but with the following additional criteria:
+	Funding Source of Credit Card    Funding Source ‚Äì From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions. Funding Mix is determined by Transaction Type field
+	
+35    nTPV Debit Card - The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with Debit Card as the funding source.
+    Same as nTPV - Rec but with the following additional criteria:
+	Funding Source of Debit Card    Funding Source ‚Äì From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions. Funding Mix is determined by Transaction Type field.
+	
+36    nTPV FX Neutral Rec - The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period at the FX Neutral rate.  
+	External FX neutral is defined as ‚ÄúCurrent quarter local currency converted to USD using an average quarterly spot rate of the Prior Year, Same Quarter and comparing that to the actual reported numbers results (at spot rates) of the same Prior Year, Prior Quarter (for example: Q1‚Äô15 FXN growth is calculated as Q1‚Äô15 local currency converted to USD using the average quarterly spot rate of Q1‚Äô14 and comparing that to the actual reported results (at spot rates)bof Q1‚Äô14).
+	Same as nTPV - Rec but translated at the respective quarterly average historical rate to determine the FX Neutral value. 
+	
+37    nTPV LM Rec - The value of Large Merchant (LM) payments received, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period.
+	A Large Merchant is defined as a Merchant account with a TPV > $1.2 Million over the past 12 months.    
+                                
+38    nTPV Mobile Rec - The value of Mobile payments received, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period.
+    Same as nTPV - Rec but with the following additional criteria:
+	Payment Flow - Contains mobile in sub flow, flow family, or primary flow    Mobile ‚Äì From Payment Flow
+	Payment flow -¬† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY   Mobile is determined by Payment Flow
+	
+39    nTPV Other Payment - The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with Other Payments as the funding source.
+    Same as nTPV - Rec but with the following additional criteria:
+	Funding Source not equal to ACH, Buyer Credit, Credit Card, Debit Card nor PayPal Balance.
+    Funding Source ‚Äì From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions. Funding Mix is determined by Transaction Type field.
+	
+40    nTPV P2P Rec - The value of P2P payments received, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period.
+    Same as nTPV - Rec but with the following additional criteria:
+	Payment Flow - Sub flow contains Send Money, Legacy WAP, P2P, or Money Request
+	Transaction Subtype G, H or S    Payment flow -¬† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY
+	P2P:
+	‚Äì Transaction Subtype G, H or S 
+	- Payment Flow = (Send Money, Legacy WAP, P2P, Money request)
+                                
+41    nTPV Paypal Balance - The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with PayPal Balance as the funding source.
+	Same as nTPV - Rec but with the following additional criteria:
+	Funding Source of PayPal Balance    
+	Funding Source ‚Äì From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions, Funding Mix is determined by Transaction Type field.
+	
+42    nTPV XB Rec - The value of Cross Border (CBT) payments received, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period.
+	Same as nTPV - Rec but with the following additional criteria:
+	Account Table - Sender and receiver accounts are in different countries
+    CBT is determined by:
+	‚Äì RDL table - <INTRA/CROSSBORDER TNX> (ZCINTCRSB) (and by Sender or receiver Flag)
+                                
+43    nTPV XB Sdr - The value of Cross Border (CBT) payments sent, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period.
+	Same as nTPV - Rec but with the following additional criteria:
+	Account Table - Sender and receiver accounts are in different countries
+	Value of Payments Sent, instead of Received
+    CBT is determined by:
+	‚Äì RDL table - <INTRA/CROSSBORDER TNX> (ZCINTCRSB) (and by Sender or receiver Flag)
+                                
+44    RAM Margin % - Risk Adjusted Margin % is a calculated Credit metric defined as the Risk Adjusted Margin as a percentage of the Average Loans for the given time period.
+	Calculation: (RAM Margin $ / Average Loans Receivable) * (365/#of days in given reporting period)
+	Additional Calculations to calculate above calculation for a given period: 
+	RAM Margin $ = Revenue Margin $ + Cost of Funds Margin $ + Credit Loss and Fraud Margin $
+	Revenue Margin $ = Net Revenue - (421026 + 404016 + 404021 + 404022 + 404026+ 404046 + 404040)
+	Cost of Funds Margin $ = - ( 550008 + 550009)
+	Credit Loss and Fraud Margin $ =- (744037 + 744020 + 744003 + 744007 + 744008 + 744009 + 744014 + 744022 + 744024 )    Calculated metric, see base metric definitions. 
+	
+45    Take Rate - Take Rate is a calculated metric defined as below for a given reporting period:	Revenue / nTPV - Rec
+                               
+46    TPA - Transactions per Active Accounts is a calculated metric defined as below for a given month:
+	Sum of No of Payments for trailing 12 months / Active Accounts.
+	
+47    90+ Day Delinquency Rate % - 90+ Day Credit Delinquency Rate defined as the value of 90+ Day Delinquencies at quarter end divided by total endling loan receivables amount.
+	Calculation: (Bill Me Later 90+ Delinquency for Quarter End Month / Ending Loans Before Paricipation for Quarter End Month
+	Additional calculations to calculate above calculation for a given period: 
+	Ending Loans Before Participation: Bill Me Later Gross Ending Loans Receivable - Ending Loans Before Participation-Load - 112645 - BL ST - 112647 - BL ST;    Calculated metric, see base metric definitions. 
+	Base Metric: GL Accounts and 90+ Day Delinquency Loans $
+	
+48	Controlling Area - Controlling area is an organizational element which is responsible for management of costs and profits. The relation between controlling area to company code is one to many relationship, so one or many company codes can be linked to a single controlling area.
+	A controlling area is a closed entity used for cost accounting. You can allocate costs only within a controlling area. These allocations cannot affect objects in other controlling areas
+	Sample data for controlling area- USA-01, CA-01, IND-01, USA-02
 
-Base Metric: GL Accounts and Average Loans"								Calculated in Credit Report
-25	New Mobile Activations	"Count of new mobile activations in a given reporting period, includind PayPal core and Venmo. 
+49	Functional Area - Functional area in SAP, is an organizational unit that classifies the operating expenses of company according to functions administration, sales and distribution, marketing, production and research & development.Sample data for Functional Area - HR, RnD, Sales, Admin, marketing
 
-A mobile activation is defined as the first time a mobile payment is sent.  This determination is based on the date of the first sender event for an account and the Payment Flow sub flow indicator of mobile."	Venmo is manually loaded.  PayPal core is loaded from EDW through Essbase.	Venmo is manually loaded.  PayPal core is loaded from EDW through Essbase.								Venmo is manually loaded.  PayPal core is loaded from EDW through Essbase.
-26	No of Payments Rec	"Number of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period."	"TRANSACTION TYPE: ìUî Payment Transaction
-nTPV Impact Flag = Yes
-PAYMENT OFFICIAL FLAG: Flag value needs to be set to ë00í (Official Payment)
-REVERSAL STATUS: 
-ë00í ñ ìNot Reversedî
-ë01í ñ ìPartial Reversalî
-ë02í ñ ìFull Reversalî
-"	"Transaction type† - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCTRANTYP
-Official payment indicator - AV_BV_RDL_ZAFI______Z_SLPD- /BIC/ZCOFFPMT
-Transaction Status - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCSTATUS
-"								
-27	No of Payments Mobile Rec	The number of mobile payments received (as defined above) for a given reporting period.	"Same as No of Payments but with the following additional criteria:
-Payment Flow - Contains ""mobile"" in sub flow, flow family, or primary flow"	"Mobile ñ From Payment Flow
-Payment flow -† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY
-"								Mobile is determined by Payment Flow
-28	No of Payments P2P Rec	The number of P2P payments received (as defined above) for a given reporting period.	"Same as No of Payments but with the following additional criteria:
-1. Payment Flow - Sub flow contains ""Send Money"", ""Legacy WAP"", ""P2P"", or ""Money Request""
-2. Transaction Subtype G, H or S"	"Payment flow -† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY
-P2P:
-ñ Transaction Subtype G, H or S 
-- Payment Flow = (Send Money, Legacy WAP, P2P, Money request)
-"								
-29	No of Payments XB Rec	The number of cross border (CBT) payments received (as defined above) for a given reporting period.  A cross border transaction is a transaction in which the sender and reciever accounts are located in different countries.	"Same as No of Payments but with the following additional criteria:
-Account Table - Sender and receiver accounts are in different countries"	"CBT is determined by:
-ñ RDL table - <INTRA/CROSSBORDER TNX> (ZCINTCRSB) (and by Sender or receiver Flag)
-"								
-30	nTPV Rec	"The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period."	"TRANSACTION TYPE: ìUî Payment Transaction
-REVERSAL STATUS: 
-ë00í ñ ìNot Reversedî
-ë01í ñ ìPartial Reversalî
-ë02í ñ ìFull Reversalî
-PAYMENT OFFICIAL FLAG: Flag value needs to be set to ë00í (Official Payment)
-PAYMENT SENT / RECEIVED FLAG: Flag value has to be ë00í (Sent) (will be used to get 1 side of the transaction)
-nTPV Impact Flag = Yes ñ From RDL table
-"	"Transaction Amount ñ Absolute of Transaction Amount
-Transaction type† - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCTRANTYP
-Reversal Status - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCSTATUS
-Official payment indicator - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCOFFPMT
-Sender or receiver flag - AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCSENDREC
-nTPV Impact Flag"								
-31	nTPV ACH	"The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with ACH as the funding source."	"Same as nTPV - Rec but with the following additional criteria:
-Funding Source of ACH"	"Funding Source ñ From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions"								Funding Mix is determined by Transaction Type field
-32	nTPV Buyer Credit	"The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with Buyer Credit as the funding source."	"Same as nTPV - Rec but with the following additional criteria:
-Funding Source of Buyer Credit"	"Funding Source ñ From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions"								Funding Mix is determined by Transaction Type field
-33	nTPV Card	nTPV Card is defined as the sum of of nTPV Credit Card and nTPV Debit Card.	Calculated as the sum of nTPV Credit Card and nTPV Debit Card	Calculated as the sum of nTPV Credit Card and nTPV Debit Card								Calculated as the sum of nTPV Credit Card and nTPV Debit Card
-34	nTPV Credit Card	"The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with Credit Card as the funding source."	"Same as nTPV - Rec but with the following additional criteria:
-Funding Source of Credit Card"	"Funding Source ñ From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions"								Funding Mix is determined by Transaction Type field
-35	nTPV Debit Card	"The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with Debit Card as the funding source."	"Same as nTPV - Rec but with the following additional criteria:
-Funding Source of Debit Card"	"Funding Source ñ From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions"								Funding Mix is determined by Transaction Type field
-36	nTPV FX Neutral Rec	"The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period at the FX Neutral rate.  
-
-External FX neutral is defined as ìCurrent quarter local currency converted to USD using an average quarterly spot rate of the Prior Year, Same Quarter and comparing that to the actual reported numbers results (at spot rates) of the same Prior Year, Prior Quarter (for example: Q1í15 FXN   growth is calculated as Q1í15 local currency converted to USD using the average quarterly spot rate of Q1í14 and comparing that to the actual reported results (at spot rates)bof Q1í14)."	Same as nTPV - Rec but translated at the respective quarterly average historical rate to determine the FX Neutral value.									
-37	nTPV LM Rec	"The value of Large Merchant (LM) payments received, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period.
-
-A Large Merchant is defined as a Merchant account with a TPV > $1.2 Million over the past 12 months."	Same as nTPV - Rec but filtered on Merchants with $1.2 million or greater of payment value over the past 2 months.	Same as nTPV - Rec but filtered on Merchants with $1.2 million or greater of payment value over the past 2 months.								
-38	nTPV Mobile Rec	"The value of Mobile payments received, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period."	"Same as nTPV - Rec but with the following additional criteria:
-Payment Flow - Contains ""mobile"" in sub flow, flow family, or primary flow"	"Mobile ñ From Payment Flow
-Payment flow -† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY"								Mobile is determined by Payment Flow
-39	nTPV Other Payment	"The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with Other Payments as the funding source. "	"Same as nTPV - Rec but with the following additional criteria:
-Funding Source not equal to ACH, Buyer Credit, Credit Card, Debit Card nor PayPal Balance"	"Funding Source ñ From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions"								Funding Mix is determined by Transaction Type field
-40	nTPV P2P Rec	"The value of P2P payments received, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period."	"Same as nTPV - Rec but with the following additional criteria:
-1. Payment Flow - Sub flow contains ""Send Money"", ""Legacy WAP"", ""P2P"", or ""Money Request""
-2. Transaction Subtype G, H or S"	"Payment flow -† AV_BV_RDL_ZAFI______Z_SLPD-/BIC/ZCPAYKEY
-P2P:
-ñ Transaction Subtype G, H or S 
-- Payment Flow = (Send Money, Legacy WAP, P2P, Money request)
-"								
-41	nTPV Paypal Balance	"The value of payments received, net of payment reversals, successfully completed through the Payments Platform for a given reporting period with PayPal Balance as the funding source."	"Same as nTPV - Rec but with the following additional criteria:
-Funding Source of PayPal Balance"	"Funding Source ñ From RDL Payment Transaction, get all transactions for Payment Id and get to funding (transaction type) of all transactions"								Funding Mix is determined by Transaction Type field
-42	nTPV XB Rec	"The value of Cross Border (CBT) payments received, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period."	"Same as nTPV - Rec but with the following additional criteria:
-Account Table - Sender and receiver accounts are in different countries"	"CBT is determined by:
-ñ RDL table - <INTRA/CROSSBORDER TNX> (ZCINTCRSB) (and by Sender or receiver Flag)
-"								
-43	nTPV XB Sdr	"The value of Cross Border (CBT) payments sent, net of payment reversals, successfully compeleted through the Payments Platform for a given reporting period."	"Same as nTPV - Rec but with the following additional criteria:
-Account Table - Sender and receiver accounts are in different countries
-Value of Payments Sent, instead of Received"	"CBT is determined by:
-ñ RDL table - <INTRA/CROSSBORDER TNX> (ZCINTCRSB) (and by Sender or receiver Flag)
-"								
-44	RAM Margin %	"Risk Adjusted Margin % is a calculated Credit metric defined as the Risk Adjusted Margin as a percentage of the Average Loans for the given time period.
-
-Calculation: (RAM Margin $ / Average Loans Receivable) * (365/#of days in given reporting period)
-
-Additional Calculations to calculate above calculation for a given period: 
-RAM Margin $ = Revenue Margin $ + Cost of Funds Margin $ + Credit Loss and Fraud Margin $
-Revenue Margin $ = Net Revenue - (421026 + 404016 + 404021 + 404022 + 404026+ 404046 + 404040)
-Cost of Funds Margin $ = - ( ""550008"" + ""550009"")
-Credit Loss and Fraud Margin $ =- (""744037"" + ""744020"" + ""744003"" + ""744007"" + ""744008"" + ""744009"" + ""744014"" + ""744022"" + ""744024"" )"	"Calculated metric, see base metric definitions. 
-
-Base Metric: GL Accounts and Average Loans"	"Calculated metric, see base metric definitions. 
-
-Base Metric: GL Accounts and Average Loans"								Calculated in Credit Report
-45	Take Rate	"Take Rate is a calculated metric defined as below for a given reporting period:
-
-Revenue / nTPV - Rec"	"Calculated metric, see base metric definitions"	"Calculated metric, see base metric definitions"								
-46	TPA	"Transactions per Active Accounts is a calculated metric defined as below for a given month:
-
-Sum of No of Payments for trailing 12 months / Active Accounts"	"Calculated metric, see base metric definitions"	"Calculated metric, see base metric definitions"								
-47	90+ Day Delinquency Rate %	"90+ Day Credit Delinquency Rate defined as the value of 90+ Day Delinquencies at quarter end divided by total endling loan receivables amount.
-
-Calculation: (Bill Me Later 90+ Delinquency for Quarter End Month / Ending Loans Before Paricipation for Quarter End Month
-
-Additional calculations to calculate above calculation for a given period: 
-Ending Loans Before Participation: ""Bill Me Later Gross Ending Loans Receivable"" - ""Ending Loans Before Participation-Load"" - ""112645 - BL ST"" - ""112647 - BL ST"";"	"Calculated metric, see base metric definitions. 
-
-Base Metric: GL Accounts and 90+ Day Delinquency Loans $"	"Calculated metric, see base metric definitions. 
-
-Base Metric: GL Accounts and 90+ Day Delinquency Loans $"								Calculated in Credit Report
+50	Company Code - Company Code is the smallest organizational unit of Financial Accounting for which you draw individual financial statements like Balance Sheet and Profit & Loss Account for purpose of external reporting. The Creation of company code in SAP is mandatory. Sample data for Company Code - MGM 01, ABD 02, Z100
